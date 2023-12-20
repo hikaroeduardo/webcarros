@@ -1,6 +1,6 @@
 # Aplicação para consulta de carros a venda com ReactJs e Tailwind para estilização
 
-Projeto feito para consultar carros que estão a venda, cadastrados na plataforma, utilizando tecnologias como ReactJs, Tailwind para estilização e react-router-dom.
+Projeto feito para consultar carros que estão a venda, cadastrados na plataforma, utilizando tecnologias como ReactJs, Tailwind para estilização, react-router-dom, react-hook-form e zod.
 
 ## Libs instaladas
 
