@@ -63,10 +63,15 @@ export function Login() {
             />
           </div>
 
-          <button type="submit" className="bg-zinc-900 w-full rounded-md text-white h-10 font-medium">
+          <button
+            type="submit"
+            className="bg-zinc-900 w-full rounded-md text-white h-10 font-medium"
+          >
             Acessar
           </button>
         </form>
+
+        <Link to="/register">Ainda não possui uma conta? Cadastre-se!</Link>
       </div>
     </Container>
   );
