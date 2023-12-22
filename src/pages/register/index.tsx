@@ -1,5 +1,8 @@
+import { useContext } from "react";
+
 import { Container } from "../../components/container";
 import { Input } from "../../components/input";
+import { AuthContext } from "../../contexts/AuthContext";
 
 import LogoImg from "../../assets/logo.svg";
 
@@ -33,6 +36,8 @@ type FormData = z.infer<typeof schema>;
 export function Register() {
   const navigate = useNavigate();
 
+  const { handleInfoUser } = useContext(AuthContext);
+
   const {
     register,
     handleSubmit,
@@ -47,6 +52,12 @@ export function Register() {
       .then(async (user) => {
         await updateProfile(user.user, {
           displayName: data.name,
+        });
+
+        handleInfoUser({
+          name: data?.name,
+          email: data?.email,
+          uid: user?.user?.uid,
         });
 
         navigate("/dashboard", { replace: true });
