@@ -7,7 +7,7 @@ import { Container } from "../../components/container";
 import { db } from "../../services/firebaseConnection";
 import { collection, query, orderBy, getDocs } from "firebase/firestore";
 
-type PriceProps = string | number;
+type StringOrNumberProps = string | number;
 
 interface CarImageProps {
   name: string;
@@ -20,7 +20,7 @@ interface CarProps {
   name: string;
   year: string;
   uid: string;
-  price: PriceProps;
+  price: StringOrNumberProps;
   city: string;
   km: string;
   images: CarImageProps[];
