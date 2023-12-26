@@ -1,13 +1,14 @@
 import { ChangeEvent, useState, useContext } from "react";
 
 import { AuthContext } from "../../../contexts/AuthContext";
-import { storage } from "../../../services/firebaseConnection";
+import { storage, db } from "../../../services/firebaseConnection";
 import {
   ref,
   uploadBytes,
   getDownloadURL,
   deleteObject,
 } from "firebase/storage";
+import { addDoc, collection } from "firebase/firestore";
 
 import { Container } from "../../../components/container";
 import { DashboardHeader } from "../../../components/panelheader";
@@ -55,7 +56,7 @@ export function New() {
     register,
     handleSubmit,
     formState: { errors },
-    // reset,
+    reset,
   } = useForm<FormData>({
     resolver: zodResolver(schema),
     mode: "onChange",
@@ -114,7 +115,41 @@ export function New() {
   }
 
   function onSubmit(data: FormData) {
-    console.log(data);
+    if (carImages.length === 0) {
+      alert("Envie alguma imagem dest carro!");
+      return;
+    }
+
+    const carListImages = carImages.map((car) => {
+      return {
+        uid: car.uid,
+        name: car.name,
+        url: car.url,
+      };
+    });
+
+    addDoc(collection(db, "cars"), {
+      name: data.name,
+      model: data.model,
+      whatsapp: data.whatsapp,
+      city: data.city,
+      year: data.year,
+      km: data.km,
+      price: data.price,
+      description: data.description,
+      created: new Date(),
+      owner: user?.name,
+      uid: user?.uid,
+      images: carListImages,
+    })
+      .then(() => {
+        reset();
+
+        setCarImages([]);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   return (
