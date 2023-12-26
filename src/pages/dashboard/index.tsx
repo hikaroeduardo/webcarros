@@ -3,7 +3,14 @@ import { useEffect, useState, useContext } from "react";
 
 import { AuthContext } from "../../contexts/AuthContext";
 
-import { collection, getDocs, where, query } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  where,
+  query,
+  doc,
+  deleteDoc,
+} from "firebase/firestore";
 import { db } from "../../services/firebaseConnection";
 
 import { Container } from "../../components/container";
@@ -65,6 +72,14 @@ export function Dashboard() {
     loadCars();
   }, [user]);
 
+  async function handleDeleteCar(id: string) {
+    const docRef = doc(db, "cars", id);
+
+    await deleteDoc(docRef);
+
+    setCars(cars.filter((car) => car.id !== id));
+  }
+
   return (
     <Container>
       <DashboardHeader />
@@ -77,7 +92,7 @@ export function Dashboard() {
           >
             <button
               className="absolute bg-white w-14 h-14 rounded-full flex items-center justify-center right-2 top-2"
-              onClick={() => {}}
+              onClick={() => handleDeleteCar(car?.id)}
             >
               <FiTrash2 size={26} color="#000" />
             </button>
