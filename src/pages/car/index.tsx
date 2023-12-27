@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 import { Container } from "../../components/container";
 
@@ -36,6 +36,7 @@ interface CarProps {
 
 export function CarDetail() {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const [car, setCar] = useState<CarProps>();
   const [sliderPerView, setSliderPerView] = useState<number>(2);
@@ -47,6 +48,10 @@ export function CarDetail() {
       const docRef = doc(db, "cars", id);
       getDoc(docRef)
         .then((snapshot) => {
+          if (!snapshot.data()) {
+            navigate("/");
+          }
+
           setCar({
             id: snapshot.id,
             name: snapshot.data()?.name,
@@ -67,7 +72,7 @@ export function CarDetail() {
     }
 
     loadCar();
-  }, [id]);
+  }, [id, navigate]);
 
   useEffect(() => {
     function handleResize() {
@@ -89,17 +94,19 @@ export function CarDetail() {
 
   return (
     <Container>
-      <Swiper
-        slidesPerView={sliderPerView}
-        pagination={{ clickable: true }}
-        navigation
-      >
-        {car?.images.map((image) => (
-          <SwiperSlide key={image?.name}>
-            <img className="w-full h-96 object-cover" src={image?.url} />
-          </SwiperSlide>
-        ))}
-      </Swiper>
+      {car && (
+        <Swiper
+          slidesPerView={sliderPerView}
+          pagination={{ clickable: true }}
+          navigation
+        >
+          {car?.images.map((image) => (
+            <SwiperSlide key={image?.name}>
+              <img className="w-full h-96 object-cover" src={image?.url} />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      )}
 
       {car && (
         <main className="w-full bg-white rounded-lg p-6 my-4">
