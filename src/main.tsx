@@ -8,6 +8,7 @@ import AuthProvider from "./contexts/AuthContext.tsx";
 import { register } from "swiper/element/bundle";
 
 import { RouterProvider } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 
 register();
 import "swiper/css";
@@ -17,6 +18,7 @@ import "swiper/css/scrollbar";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
+    <Toaster position="top-right" reverseOrder={false} />
     <AuthProvider>
       <RouterProvider router={router} />
     </AuthProvider>

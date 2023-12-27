@@ -19,6 +19,7 @@ import { FiTrash, FiUpload } from "react-icons/fi";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import toast from "react-hot-toast";
 
 import { v4 as uuidV4 } from "uuid";
 
@@ -93,7 +94,7 @@ export function New() {
       if (image.type === "image/jpeg" || image.type === "image/png") {
         await handleUpload(image);
       } else {
-        alert("Envie uma imagem em jpeg ou em png.");
+        toast.error("Envie uma imagem em jpeg ou em png.");
 
         return;
       }
@@ -145,9 +146,12 @@ export function New() {
       .then(() => {
         reset();
 
+        toast.success("Carro cadastrado com sucesso!");
+
         setCarImages([]);
       })
       .catch((error) => {
+        toast.error("Erro ao cadastrar carro.");
         console.log(error);
       });
   }
